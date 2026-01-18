@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+/* Info panel styles from main.css */
+.info-btn {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  background: #ffffff;
+  color: #272730;
+  border: 1px solid #3a3a44;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+}
+
+.info-btn:hover,
+.info-btn:focus {
+  background: #272730;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.info-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.info-panel.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.info-panel__content {
+  background: #272730;
+  color: #ffffff;
+  width: 100%;
+  max-width: 800px;
+  max-height: 80vh;
+  padding: 30px 40px;
+  border-radius: 12px 12px 0 0;
+  border-top: 1px solid #3a3a44;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.info-panel.is-visible .info-panel__content {
+  transform: translateY(0);
+}
+
+.info-panel__content h2 {
+  border: none;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.info-panel__content h3 {
+  color: #aaaabb;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.info-panel__content p {
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 15px;
+}
+
+.info-panel__content ul,
+.info-panel__content ol {
+  padding-left: 20px;
+  line-height: 1.6;
+  list-style: auto;
+}
+
+.info-panel__content li {
+  margin-bottom: 10px;
+}
+
+.info-panel__content code {
+  background: #1e1e24;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.info-panel__close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #aaaabb;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.info-panel__close-btn:hover {
+  color: white;
+}
