@@ -34,7 +34,7 @@ export default function Home() {
     setGeminiAdvice(null)
 
     try {
-      // Call Next.js API route
+      // Call Next.js API route here
       const response = await fetch('/api/advice', {
         method: 'POST',
         headers: {
