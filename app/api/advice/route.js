@@ -25,7 +25,7 @@ export async function POST(request) {
     }
 
     // Log API key status (first few chars only for security)
-    console.log('API Key loaded:', GEMINI_API_KEY.substring(0, 10) + '...')
+    console.log('Has GEMINI_API_KEY:', !!process.env.GEMINI_API_KEY)
 
     // Create the prompt
     const prompt = `You are a helpful and encouraging financial coach. Analyze the following retirement projection and provide personalized, actionable advice. Keep the tone positive and focus on 3-4 key takeaways. Format the output using markdown, including bullet points for recommendations. Do not use headings.
@@ -94,12 +94,17 @@ export async function POST(request) {
       console.error('API Key Error:', error.message)
       console.error('Full error:', error)
       return NextResponse.json(
-        { error: `API key error: ${error?.message || 'Invalid or missing API key'}. Please check your GEMINI_API_KEY in .env.local and restart the server.` },
-        { status: 401 }
+        { error: 'Server configuration error: GEMINI_API_KEY not found. Set it in Netlify Site settings → Environment variables, then redeploy.' },
+        { status: 500 }
       )
     }
 
     // Handle quota/rate limit errors
+    const msg = (error?.message || '').toLowerCase()
+    const status = error?.status || error?.response?.status
+    if (status === 429 || msg.includes('quota') || msg.includes('rate limit')) {
+      return NextResponse.json({ error: "API quota exceeded. Please try again later." }, { status: 429 })
+    }
     if (error?.message?.includes('quota') || error?.message?.includes('429')) {
       return NextResponse.json(
         { error: "API quota exceeded. Please try again later." },
