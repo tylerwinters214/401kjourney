@@ -3,7 +3,26 @@ import { ContributionMode, SalaryIncreaseType } from '../utils/constants'
 
 function InputPanel({ inputs, onInputChange }) {
   const handleChange = (field, value) => {
-    onInputChange(field, typeof value === 'string' ? value : parseFloat(value) || 0)
+    const numericFields = new Set([
+      'currentAge',
+      'retirementAge',
+      'annualIncome',
+      'currentSavings',
+      'currentSavingsTraditionalPercentage',
+      'contributionValue',
+      'salaryIncreaseValue',
+      'rateOfReturn',
+      'inflationRate',
+      'retirementTaxRate'
+    ])
+
+    if (numericFields.has(field)) {
+      const parsedValue = parseFloat(value)
+      onInputChange(field, Number.isNaN(parsedValue) ? 0 : parsedValue)
+      return
+    }
+
+    onInputChange(field, value)
   }
 
   return (
