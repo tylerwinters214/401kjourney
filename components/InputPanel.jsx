@@ -80,6 +80,14 @@ function InputPanel({ inputs, onInputChange }) {
           </div>
         </div>
         <div className="md:col-span-2">
+          {(() => {
+            const rothPercent = 100 - inputs.currentSavingsTraditionalPercentage
+            const traditionalPercent = inputs.currentSavingsTraditionalPercentage
+            const mixText = `Roth ${rothPercent} percent, Traditional ${traditionalPercent} percent`
+            const mixDescriptionId = 'current-savings-mix-description'
+
+            return (
+              <>
           <label htmlFor="currentSavingsTraditionalPercentage" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Current Savings Mix</label>
           <input 
             id="currentSavingsTraditionalPercentage" 
@@ -89,12 +97,21 @@ function InputPanel({ inputs, onInputChange }) {
             step="1" 
             value={inputs.currentSavingsTraditionalPercentage} 
             onChange={(e) => handleChange('currentSavingsTraditionalPercentage', e.target.value)}
+            aria-describedby={mixDescriptionId}
+            aria-valuetext={mixText}
             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-700 accent-indigo-600"
           />
-          <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1 px-1">
-            <span className="font-medium text-slate-600 dark:text-slate-300">Roth: {100 - inputs.currentSavingsTraditionalPercentage}%</span>
-            <span className="font-medium text-slate-600 dark:text-slate-300">Traditional: {inputs.currentSavingsTraditionalPercentage}%</span>
+          <div
+            id={mixDescriptionId}
+            className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1 px-1"
+            aria-live="polite"
+          >
+            <span className="font-medium text-slate-600 dark:text-slate-300">Roth: {rothPercent}%</span>
+            <span className="font-medium text-slate-600 dark:text-slate-300">Traditional: {traditionalPercent}%</span>
           </div>
+              </>
+            )
+          })()}
         </div>
         <div className="md:col-span-2">
           <label htmlFor="contributionValue" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
