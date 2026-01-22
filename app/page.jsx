@@ -142,7 +142,7 @@ export default function Home() {
             {geminiAdvice && <AffiliatePanel />}
           </div>
         </main>
-        <footer className="text-center mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-sm text-slate-500 dark:text-slate-400">
+        <footer className="text-center mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-sm text-slate-600 dark:text-slate-300">
           <p>This calculator is for illustrative purposes only and does not constitute financial advice.</p>
           <p>&copy; {new Date().getFullYear()} AI Retirement Calculator. All rights reserved.</p>
         </footer>

@@ -53,7 +53,7 @@ function InputPanel({ inputs, onInputChange }) {
           <label htmlFor="annualIncome" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Pre-Tax Annual Income</label>
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span className="text-slate-500 sm:text-sm">$</span>
+              <span className="text-slate-600 dark:text-slate-300 sm:text-sm">$</span>
             </div>
             <input 
               type="number" 
@@ -68,7 +68,7 @@ function InputPanel({ inputs, onInputChange }) {
           <label htmlFor="currentSavings" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Current Savings</label>
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span className="text-slate-500 sm:text-sm">$</span>
+              <span className="text-slate-600 dark:text-slate-300 sm:text-sm">$</span>
             </div>
             <input 
               type="number" 
@@ -103,7 +103,7 @@ function InputPanel({ inputs, onInputChange }) {
           />
           <div
             id={mixDescriptionId}
-            className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1 px-1"
+            className="flex justify-between text-xs text-slate-600 dark:text-slate-300 mt-1 px-1"
             aria-live="polite"
           >
             <span className="font-medium text-slate-600 dark:text-slate-300">Roth: {rothPercent}%</span>
@@ -121,7 +121,7 @@ function InputPanel({ inputs, onInputChange }) {
             <div className="col-span-3 relative">
               {inputs.contributionMode === ContributionMode.FixedAmount && (
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <span className="text-slate-500 sm:text-sm">$</span>
+                  <span className="text-slate-600 dark:text-slate-300 sm:text-sm">$</span>
                 </div>
               )}
               <input 
@@ -133,7 +133,7 @@ function InputPanel({ inputs, onInputChange }) {
               />
               {inputs.contributionMode === ContributionMode.Percentage && (
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <span className="text-slate-500 sm:text-sm">%</span>
+                  <span className="text-slate-600 dark:text-slate-300 sm:text-sm">%</span>
                 </div>
               )}
             </div>
@@ -142,6 +142,7 @@ function InputPanel({ inputs, onInputChange }) {
                 id="contributionMode" 
                 value={inputs.contributionMode}
                 onChange={(e) => handleChange('contributionMode', e.target.value)}
+                aria-label="Contribution frequency"
                 className="w-full h-full px-3 py-2 rounded-md bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
               >
                 <option value={ContributionMode.Percentage}>% / year</option>
@@ -165,12 +166,13 @@ function InputPanel({ inputs, onInputChange }) {
                 />
               </div>
               <div className="col-span-2">
-                <select 
-                  id="salaryIncreaseType" 
-                  value={inputs.salaryIncreaseType}
-                  onChange={(e) => handleChange('salaryIncreaseType', e.target.value)}
-                  className="w-full h-full px-3 py-2 rounded-md bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
-                >
+              <select 
+                id="salaryIncreaseType" 
+                value={inputs.salaryIncreaseType}
+                onChange={(e) => handleChange('salaryIncreaseType', e.target.value)}
+                aria-label="Salary increase type"
+                className="w-full h-full px-3 py-2 rounded-md bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
+              >
                   <option value={SalaryIncreaseType.Percentage}>%</option>
                   <option value={SalaryIncreaseType.Dollar}>$</option>
                 </select>
@@ -202,7 +204,7 @@ function InputPanel({ inputs, onInputChange }) {
               className="w-full pr-10 pl-3 py-2 rounded-md bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-              <span className="text-slate-500 sm:text-sm">%</span>
+              <span className="text-slate-600 dark:text-slate-300 sm:text-sm">%</span>
             </div>
           </div>
         </div>
@@ -217,7 +219,7 @@ function InputPanel({ inputs, onInputChange }) {
               className="w-full pr-10 pl-3 py-2 rounded-md bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-              <span className="text-slate-500 sm:text-sm">%</span>
+              <span className="text-slate-600 dark:text-slate-300 sm:text-sm">%</span>
             </div>
           </div>
         </div>
@@ -232,7 +234,7 @@ function InputPanel({ inputs, onInputChange }) {
               className="w-full pr-10 pl-3 py-2 rounded-md bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-              <span className="text-slate-500 sm:text-sm">%</span>
+              <span className="text-slate-600 dark:text-slate-300 sm:text-sm">%</span>
             </div>
           </div>
         </div>
