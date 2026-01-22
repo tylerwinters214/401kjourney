@@ -81,7 +81,9 @@ function GeminiCoach({ advice, isLoading, onGetAdvice }) {
       <div className="flex items-center mb-4">
         <h2 className="text-xl font-bold text-slate-800 dark:text-white">AI Retirement Coach</h2>
       </div>
-      {content}
+      <div aria-live="polite" aria-atomic="true" aria-busy={isLoading}>
+        {content}
+      </div>
     </div>
   )
 }
