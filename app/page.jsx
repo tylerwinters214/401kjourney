@@ -94,7 +94,7 @@ export default function Home() {
     <div className="min-h-screen text-slate-900 dark:text-slate-100 font-sans p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         <header className="relative text-center mb-10">
-          <div className="absolute right-0 top-0 flex items-center gap-2">
+          <div className="flex justify-center gap-2 sm:absolute sm:right-0 sm:top-0 sm:justify-start mb-4 sm:mb-0">
             <button
               type="button"
               className="inline-flex h-11 w-11 items-center justify-center rounded-full text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-700/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
