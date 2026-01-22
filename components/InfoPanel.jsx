@@ -1,28 +1,93 @@
-import React from 'react'
+import React, { useEffect, useId, useRef } from 'react'
 
-function InfoPanel({ isVisible, onClose }) {
+function InfoPanel({ isVisible, onClose, panelId }) {
+  const panelRef = useRef(null)
+  const closeButtonRef = useRef(null)
+  const titleId = useId()
+  const descriptionId = useId()
+
+  useEffect(() => {
+    if (!isVisible) return
+
+    const previouslyFocused = document.activeElement
+    const focusableSelector = 'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    const getFocusableElements = () => {
+      if (!panelRef.current) return []
+      return Array.from(panelRef.current.querySelectorAll(focusableSelector)).filter(
+        element => !element.hasAttribute('disabled')
+      )
+    }
+
+    if (closeButtonRef.current) {
+      closeButtonRef.current.focus()
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onClose()
+        return
+      }
+
+      if (event.key !== 'Tab') return
+
+      const focusableElements = getFocusableElements()
+      if (focusableElements.length === 0) return
+
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      if (previouslyFocused && previouslyFocused.focus) {
+        previouslyFocused.focus()
+      }
+    }
+  }, [isVisible, onClose])
+
   if (!isVisible) return null
 
   return (
     <div 
       className={`info-panel ${isVisible ? 'is-visible' : ''}`}
+      id={panelId}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose()
         }
       }}
     >
-      <div className="info-panel__content" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="info-panel__content"
+        onClick={(e) => e.stopPropagation()}
+        ref={panelRef}
+      >
         <button 
           className="info-panel__close-btn" 
-          title="Close"
+          aria-label="Close About and How to Use panel"
           onClick={onClose}
+          ref={closeButtonRef}
         >
           ×
         </button>
         
-        <h2>Welcome to 401k Journey!</h2>
-        <p>Your ultimate <strong>free 401k and retirement calculator</strong>, supercharged with AI insights. This tool is designed for everyone—from savvy investors aiming to optimize their portfolio to beginners wanting to understand their path to retirement.</p>
+        <h2 id={titleId}>Welcome to 401k Journey!</h2>
+        <p id={descriptionId}>Your ultimate <strong>free 401k and retirement calculator</strong>, supercharged with AI insights. This tool is designed for everyone—from savvy investors aiming to optimize their portfolio to beginners wanting to understand their path to retirement.</p>
         
         <h3>Why Use an AI-Powered 401k Calculator?</h3>
         <p>Planning for retirement involves many variables. 401k Journey helps you:</p>

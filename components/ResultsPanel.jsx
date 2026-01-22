@@ -8,6 +8,10 @@ import { formatCurrency } from '../utils/calculations'
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
 function ResultsPanel({ results, inputs }) {
+  const chartSummary = results.chartData.length
+    ? `From age ${results.chartData[0].age} to ${results.chartData[results.chartData.length - 1].age}, total savings grows from ${formatCurrency(results.chartData[0].total, 0)} to ${formatCurrency(results.chartData[results.chartData.length - 1].total, 0)}. Contributions total ${formatCurrency(results.chartData[results.chartData.length - 1].contributions, 0)} and investment growth is ${formatCurrency(results.chartData[results.chartData.length - 1].growth, 0)} at retirement.`
+    : 'No chart data available.'
+
   const chartData = {
     labels: results.chartData.map(d => d.age),
     datasets: [
@@ -76,7 +80,13 @@ function ResultsPanel({ results, inputs }) {
       </div>
       <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">Savings Growth Over Time</h3>
       <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">This chart shows how your savings could grow, separating your contributions from investment returns.</p>
-      <div className="chart-container">
+      <p id="savings-growth-summary" className="sr-only">{chartSummary}</p>
+      <div
+        className="chart-container"
+        role="img"
+        aria-label="Savings growth over time chart"
+        aria-describedby="savings-growth-summary"
+      >
         <Line data={chartData} options={chartOptions} />
       </div>
     </div>

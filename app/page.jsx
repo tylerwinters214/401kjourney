@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
+import { MoonIcon, SunIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import InputPanel from '../components/InputPanel'
 import ResultsPanel from '../components/ResultsPanel'
 import GeminiCoach from '../components/GeminiCoach'
@@ -15,12 +16,33 @@ export default function Home() {
   const [geminiAdvice, setGeminiAdvice] = useState(null)
   const [isAdviceLoading, setIsAdviceLoading] = useState(false)
   const [isInfoPanelVisible, setIsInfoPanelVisible] = useState(false)
+  const [theme, setTheme] = useState('dark')
+  const [isMounted, setIsMounted] = useState(false)
+  const infoPanelId = useId()
 
   useEffect(() => {
     const newResults = calculateProjection(inputs)
     setResults(newResults)
     setGeminiAdvice(null)
   }, [inputs])
+
+  useEffect(() => {
+    const storedTheme = window.localStorage.getItem('theme')
+    if (storedTheme === 'light' || storedTheme === 'dark') {
+      setTheme(storedTheme)
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      setTheme(prefersDark ? 'dark' : 'light')
+    }
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) return
+    const root = document.documentElement
+    root.classList.toggle('dark', theme === 'dark')
+    window.localStorage.setItem('theme', theme)
+  }, [theme, isMounted])
 
   const handleInputChange = (field, value) => {
     setInputs(prev => ({
@@ -71,20 +93,39 @@ export default function Home() {
   return (
     <div className="min-h-screen text-slate-900 dark:text-slate-100 font-sans p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-10">
+        <header className="relative text-center mb-10">
+          <div className="absolute right-0 top-0 flex items-center gap-2">
+            <button
+              type="button"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-700/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              onClick={() => setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'))}
+              aria-pressed={theme === 'dark'}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? (
+                <SunIcon className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <MoonIcon className="h-5 w-5" aria-hidden="true" />
+              )}
+            </button>
+            <button 
+              id="info-toggle-btn" 
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-700/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              aria-label="Learn how to use the 401k calculator"
+              aria-expanded={isInfoPanelVisible}
+              aria-controls={infoPanelId}
+              aria-haspopup="dialog"
+              onClick={() => setIsInfoPanelVisible(true)}
+            >
+              <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-800 dark:text-white tracking-tight">401k Journey</h1>
           <p className="mt-4 text-lg text-slate-600 dark:text-slate-300 max-w-4xl mx-auto">Project your financial future with our retirement calculator and get personalized AI-powered insights.</p>
         </header>
         <main className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <button 
-            id="info-toggle-btn" 
-            className="info-btn" 
-            title="About & How to Use"
-            onClick={() => setIsInfoPanelVisible(true)}
-          >
-            ?
-          </button>
           <InfoPanel 
+            panelId={infoPanelId}
             isVisible={isInfoPanelVisible}
             onClose={() => setIsInfoPanelVisible(false)}
           />
